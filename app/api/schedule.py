@@ -21,17 +21,13 @@ class UpdateActualsRequest(BaseModel):
 
 @router.get("/tasks")
 def get_schedule_tasks():
-    """
-    Returns the live schedule parsed from the MS Project XML file.
-    """
+    """Returns the live schedule parsed from the MS Project XML file."""
     tasks = parse_schedule()
     return {"tasks": tasks, "source": "nrl_crude_tank.xml"}
 
 @router.post("/update_actuals")
 def update_actuals(request: UpdateActualsRequest):
-    """
-    Updates actual progress. Protected by CPM Guard.
-    """
+    """Updates actual progress. Protected by CPM Guard."""
     schedule_data = parse_schedule()
     
     # 1. CPM Guard Check
@@ -42,7 +38,6 @@ def update_actuals(request: UpdateActualsRequest):
     )
     
     if not cpm_result["valid"]:
-        # Return 409 Conflict to trigger the CPM Guard UI alert
         raise HTTPException(status_code=409, detail=cpm_result["reason"])
         
     # 2. Auto-fill dates if not provided
