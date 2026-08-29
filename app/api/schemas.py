@@ -76,6 +76,15 @@ class PipelineResponse(BaseModel):
     schedule_update: Optional[Dict[str, Any]] = None
     review_message: Optional[str] = None
 
+    # Added for Frontend Trust UI
+    media_type: Optional[str] = None
+    ai_generation_risk: Optional[str] = None
+    evidence_url: Optional[str] = None
+    cross_check_status: Optional[str] = None
+
 
 class ApproveRequest(BaseModel):
     approved_by: str = "manager"
+    # Added for Manager Correction UI
+    corrected_extraction: Optional[ExtractionSchema] = None
+    overridden_task_id: Optional[str] = None

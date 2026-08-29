@@ -82,6 +82,11 @@ def process_ingestion(ingestion_id: str) -> dict:
         else:
             status = "manual_handling"
 
+    # Build evidence URL for frontend thumbnail
+    evidence_url = None
+    if ingestion.get("evidence_reference") and ingestion.get("media_type") in ("image", "document"):
+        evidence_url = f"/storage/raw/{ingestion.get('evidence_reference')}"
+
     update_record = {
         "ingestion_id": ingestion_id,
         "status": status,
@@ -90,6 +95,11 @@ def process_ingestion(ingestion_id: str) -> dict:
         "confidence": confidence.model_dump(),
         "schedule_update": schedule_update,
         "review_message": review_message,
+        # Added for Frontend Trust UI
+        "media_type": ingestion.get("media_type"),
+        "ai_generation_risk": ingestion.get("ai_generation_risk"),
+        "cross_check_status": extraction.cross_check_status,
+        "evidence_url": evidence_url,
     }
 
     state.updates[ingestion_id] = update_record
@@ -97,7 +107,12 @@ def process_ingestion(ingestion_id: str) -> dict:
     return update_record
 
 
-def approve_update(ingestion_id: str, approved_by: str = "manager") -> dict:
+def approve_update(
+    ingestion_id: str, 
+    approved_by: str = "manager",
+    corrected_extraction: ExtractionSchema | None = None,
+    overridden_task_id: str | None = None,
+) -> dict:
     update = state.updates.get(ingestion_id)
 
     if not update:
@@ -106,30 +121,41 @@ def approve_update(ingestion_id: str, approved_by: str = "manager") -> dict:
     if update["status"] in ["approved_committed", "auto_committed", "rejected"]:
         raise InvalidStateError(f"Update {ingestion_id} is already closed.")
 
-    extraction = ExtractionSchema(**update["extraction"])
+    # 1. Use manager's corrected extraction if provided, else use AI extraction
+    extraction = corrected_extraction if corrected_extraction else ExtractionSchema(**update["extraction"])
+    
+    # 2. Use manager's overridden task ID if provided, else use AI match
     match = MatchResult(**update["match"])
+    target_task_id = overridden_task_id or match.matched_task_id
 
-    if not match.matched_task_id:
-        raise InvalidStateError("Cannot approve update without matched task.")
+    if not target_task_id:
+        raise InvalidStateError("Cannot approve update without a target schedule task.")
 
+    # Apply the schedule update (CPM guard will run here against the target task)
     schedule_update = schedule_service.apply_actuals(
-        task_id=match.matched_task_id,
+        task_id=target_task_id,
         extraction=extraction,
         ingestion_id=ingestion_id,
         approved_by=approved_by,
     )
 
+    # Update the stored record
     update["status"] = "approved_committed"
     update["schedule_update"] = schedule_update
     update["review_message"] = None
+    update["extraction"] = extraction.model_dump()
+    
+    if overridden_task_id:
+        update["match"]["matched_task_id"] = target_task_id
+        update["match"]["match_reason"] = "Overridden by manager correction"
 
     ingestion = state.ingestions.get(ingestion_id, {})
 
     audit_service.append_audit(
         ingestion_id=ingestion_id,
-        wbs_activity_id=match.matched_task_id,
+        wbs_activity_id=target_task_id,
         action_performed=(
-            "Manager approved update: "
+            f"Manager corrected & approved: "
             f"{extraction.status or extraction.percent_complete or 'progress'}"
         ),
         confidence_score=update["confidence"]["score"],

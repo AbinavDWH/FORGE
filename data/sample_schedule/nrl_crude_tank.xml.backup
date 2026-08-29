@@ -1,0 +1,47 @@
+<!-- Replace: data/sample_schedule/nrl_crude_tank.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns="http://schemas.microsoft.com/project">
+  <Tasks>
+    <Task>
+      <UID>1</UID>
+      <WBS>CIV-STR-013</WBS>
+      <Name>Pier 14 Rebar Inspection</Name>
+      <Start>2026-08-20T08:00:00</Start>
+      <Finish>2026-08-21T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Zone B</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Pier 14</Component>
+    </Task>
+    <Task>
+      <UID>2</UID>
+      <WBS>CIV-STR-014</WBS>
+      <Name>Pier 14 Concrete Work</Name>
+      <Start>2026-08-22T08:00:00</Start>
+      <Finish>2026-08-24T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Zone B</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Pier 14</Component>
+      <Predecessors>1</Predecessors>
+    </Task>
+    <Task>
+      <UID>3</UID>
+      <WBS>CIV-STR-015</WBS>
+      <Name>Pier 14 Curing</Name>
+      <Start>2026-08-25T08:00:00</Start>
+      <Finish>2026-08-28T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Zone B</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Pier 14</Component>
+      <Predecessors>2</Predecessors>
+    </Task>
+  </Tasks>
+</Project>

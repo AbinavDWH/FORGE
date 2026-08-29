@@ -2,14 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-forge-bg text-gray-200 font-sans antialiased;
-  margin: 0;
-  min-height: 100vh;
+* {
+  box-sizing: border-box;
 }
 
-/* Custom scrollbar for dark mode */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #1e293b; }
-::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #64748b; }
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #FFFFFF;
+  color: #0A0A0A;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Swiss scrollbar — nearly invisible */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #E5E5E5; }
+::-webkit-scrollbar-thumb:hover { background: #E11D48; }
+
+/* Utility classes */
+@layer components {
+  .label {
+    @apply text-[10px] font-medium uppercase tracking-wider text-forge-muted;
+  }
+  .label-wide {
+    @apply text-[10px] font-semibold uppercase tracking-wider text-forge-fg;
+  }
+  .swiss-rule {
+    @apply border-t border-forge-border;
+  }
+  .swiss-rule-v {
+    @apply border-l border-forge-border;
+  }
+  .hairline {
+    @apply border border-forge-border;
+  }
+  .swiss-dot {
+    @apply inline-block w-1.5 h-1.5 bg-forge-accent;
+  }
+}
+
+/* Selection color */
+::selection {
+  background: #E11D48;
+  color: #FFFFFF;
+}

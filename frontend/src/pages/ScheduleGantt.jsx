@@ -13,114 +13,153 @@ export default function ScheduleGantt() {
   }, []);
 
   const calculateTimeline = (tasks) => {
-    let minDate = new Date(8640000000000000); // Max date
-    let maxDate = new Date(-8640000000000000); // Min date
+    let minDate = new Date(8640000000000000);
+    let maxDate = new Date(-8640000000000000);
 
     tasks.forEach(t => {
       const dates = [
-        t.planned_start, t.planned_finish, 
+        t.planned_start, t.planned_finish,
         t.actual_start, t.actual_finish
       ].filter(Boolean).map(d => new Date(d));
-
       dates.forEach(d => {
         if (d < minDate) minDate = d;
         if (d > maxDate) maxDate = d;
       });
     });
 
-    // Add 2 days padding
     minDate.setDate(minDate.getDate() - 2);
     maxDate.setDate(maxDate.getDate() + 2);
-
     const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
     setTimeline({ min: minDate, max: maxDate, totalDays });
   };
 
   const getBarStyle = (start, end) => {
     if (!start) return { display: 'none' };
-    const startDate = new Date(start);
-    const endDate = end ? new Date(end) : new Date(); // If in progress, draw to today
-    
-    const startOffset = Math.ceil((startDate - timeline.min) / (1000 * 60 * 60 * 24));
-    const duration = Math.max(1, Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)));
-
+    const s = new Date(start);
+    const e = end ? new Date(end) : new Date();
+    const offset = Math.ceil((s - timeline.min) / (1000 * 60 * 60 * 24));
+    const dur = Math.max(1, Math.ceil((e - s) / (1000 * 60 * 60 * 24)));
     return {
-      left: `${(startOffset / timeline.totalDays) * 100}%`,
-      width: `${(duration / timeline.totalDays) * 100}%`
+      left: `${(offset / timeline.totalDays) * 100}%`,
+      width: `${(dur / timeline.totalDays) * 100}%`
     };
   };
 
-  if (!timeline.min) return <div className="text-gray-400">Loading schedule...</div>;
+  const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+
+  if (!timeline.min) return <div className="px-10 py-20 text-center text-forge-muted text-sm">Loading schedule…</div>;
 
   return (
-    <div>
-      <h2 className="text-3xl font-bold text-white mb-2">Schedule Reconciliation</h2>
-      <p className="text-gray-400 mb-8">Baseline (Gray) vs Actual (Blue/Green) progress mapped directly from API.</p>
+    <div className="min-h-full">
+      <header className="px-10 py-8 border-b border-forge-border">
+        <div className="label mb-2">Master Schedule</div>
+        <div className="flex items-end justify-between">
+          <div>
+            <h1 className="text-4xl font-semibold tracking-tightest">Schedule Reconciliation</h1>
+            <p className="text-sm text-forge-muted mt-2">
+              Baseline vs Actual. Rendered from <span className="font-mono">/api/schedule/tasks</span>.
+            </p>
+          </div>
+          <div className="flex gap-8 text-xs">
+            <div>
+              <div className="label mb-1">Start</div>
+              <div className="font-mono">{fmt(timeline.min)}</div>
+            </div>
+            <div>
+              <div className="label mb-1">End</div>
+              <div className="font-mono">{fmt(timeline.max)}</div>
+            </div>
+            <div>
+              <div className="label mb-1">Duration</div>
+              <div className="font-mono tabular-nums">{timeline.totalDays}d</div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-      <div className="bg-forge-panel border border-forge-border rounded-xl overflow-hidden shadow-lg">
-        <div className="overflow-x-auto">
-          <div className="min-w-[1000px]">
-            {/* Header */}
-            <div className="grid grid-cols-12 border-b border-forge-border bg-slate-800/50 text-xs font-bold text-gray-400 uppercase tracking-wider">
-              <div className="col-span-3 p-4 border-r border-forge-border">Activity / WBS</div>
-              <div className="col-span-9 p-4 relative h-10">
-                <div className="absolute inset-0 flex justify-between px-4 text-gray-500">
-                  <span>{timeline.min.toLocaleDateString()}</span>
-                  <span>{timeline.max.toLocaleDateString()}</span>
+      <section className="px-10 py-10">
+        <div className="hairline">
+          {/* Header row */}
+          <div className="grid grid-cols-12 bg-forge-soft border-b border-forge-border">
+            <div className="col-span-4 px-5 py-3 border-r border-forge-border">
+              <div className="label-wide">Activity / WBS</div>
+            </div>
+            <div className="col-span-8 px-5 py-3 flex justify-between">
+              <div className="label-wide">Timeline</div>
+              <div className="flex gap-8 text-[10px] uppercase tracking-wider text-forge-muted">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-0.5 bg-forge-muted"></div> Baseline
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-1.5 bg-forge-accent"></div> Actual
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Rows */}
-            {tasks.map(task => (
-              <div key={task.activity_id} className="grid grid-cols-12 border-b border-forge-border hover:bg-slate-800/30 transition-colors group">
-                <div className="col-span-3 p-4 border-r border-forge-border">
-                  <div className="font-semibold text-white text-sm">{task.name}</div>
-                  <div className="text-xs text-gray-500 font-mono">{task.wbs_code}</div>
-                  <div className="text-xs text-gray-400 mt-1">{task.percent_complete}% Complete</div>
-                </div>
-                
-                <div className="col-span-9 p-4 relative h-20 flex items-center">
-                  {/* Baseline Bar (Gray) */}
-                  <div 
-                    className="absolute h-4 bg-gray-600/50 border border-gray-500 rounded-sm z-10"
-                    style={getBarStyle(task.planned_start, task.planned_finish)}
-                    title={`Baseline: ${task.planned_start} to ${task.planned_finish}`}
-                  />
-                  
-                  {/* Actual Bar (Blue/Green) */}
-                  {task.actual_start && (
-                    <div 
-                      className={`absolute h-6 rounded-md shadow-md z-20 flex items-center px-2 text-xs font-bold text-white ${
-                        task.status === 'completed' ? 'bg-emerald-500' : 'bg-blue-500'
-                      }`}
-                      style={getBarStyle(task.actual_start, task.actual_finish)}
-                      title={`Actual: ${task.actual_start} to ${task.actual_finish || 'Ongoing'}`}
-                    >
-                      {task.percent_complete}%
+          {/* Task rows */}
+          {tasks.map((task, i) => (
+            <div
+              key={task.activity_id}
+              className={`grid grid-cols-12 border-b border-forge-border last:border-b-0 hover:bg-forge-soft transition-colors ${i % 2 === 1 ? 'bg-forge-soft/40' : ''}`}
+            >
+              <div className="col-span-4 px-5 py-4 border-r border-forge-border">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">{task.name}</div>
+                    <div className="text-[10px] uppercase tracking-wider text-forge-muted mt-1 font-mono">
+                      {task.wbs_code}
                     </div>
-                  )}
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className={`text-sm font-light tabular-nums ${task.percent_complete === 100 ? 'text-forge-accent' : ''}`}>
+                      {task.percent_complete}<span className="text-[10px] text-forge-muted">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 mt-2 text-[10px] text-forge-muted">
+                  <span>{task.zone}</span>
+                  <span>·</span>
+                  <span>{task.discipline}</span>
+                  <span>·</span>
+                  <span className="uppercase tracking-wider">{task.status}</span>
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div className="col-span-8 px-5 py-4 relative h-20 flex items-center">
+                {/* Baseline bar */}
+                <div
+                  className="absolute h-[3px] bg-forge-muted/40"
+                  style={getBarStyle(task.planned_start, task.planned_finish)}
+                />
+                {/* Actual bar */}
+                {task.actual_start && (
+                  <div
+                    className={`absolute h-2 ${task.status === 'completed' ? 'bg-forge-accent' : 'bg-forge-accent/60'}`}
+                    style={getBarStyle(task.actual_start, task.actual_finish)}
+                  >
+                    <div className="absolute -top-4 left-0 text-[10px] font-mono text-forge-accent whitespace-nowrap">
+                      {task.actual_finish ? fmt(task.actual_finish) : 'ongoing'}
+                    </div>
+                  </div>
+                )}
+                {/* Planned dates */}
+                <div className="absolute top-1 left-5 text-[10px] font-mono text-forge-muted">
+                  {fmt(task.planned_start)} → {fmt(task.planned_finish)}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-      
-      <div className="mt-4 flex gap-6 text-sm text-gray-400">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-3 bg-gray-600/50 border border-gray-500 rounded-sm"></div>
-          <span>Baseline Plan</span>
+
+        <div className="mt-6 flex items-center gap-8 text-[10px] uppercase tracking-wider text-forge-muted">
+          <span>Rendered: {new Date().toLocaleTimeString()}</span>
+          <span>·</span>
+          <span>{tasks.length} activities</span>
+          <span>·</span>
+          <span>{tasks.filter(t => t.status === 'completed').length} complete</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded-sm"></div>
-          <span>Actual Progress (In Progress)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-emerald-500 rounded-sm"></div>
-          <span>Actual Progress (Completed)</span>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

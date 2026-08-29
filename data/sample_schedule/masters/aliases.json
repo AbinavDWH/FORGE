@@ -1,0 +1,17 @@
+{
+  "components": {
+    "peer 14": "pier 14",
+    "pier14": "pier 14",
+    "pir 14": "pier 14",
+    "pier 14": "pier 14"
+  },
+  "actions": {
+    "concret pour": "concrete pouring",
+    "concrete pour": "concrete pouring",
+    "pour done": "pouring completed",
+    "pour completed": "pouring completed",
+    "shuttering removed": "shuttering removal",
+    "shuttering remover": "shuttering removal",
+    "shuttering removal": "shuttering removal"
+  }
+}

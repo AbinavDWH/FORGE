@@ -14,11 +14,11 @@ export const api = {
   
   // Review Tray
   getReviewTray: () => fetch(`${API_BASE}/api/review/tray`).then(handleResponse),
-  approveUpdate: (id, approvedBy = 'Manager') => 
+  approveUpdate: (id, payload = { approved_by: 'Manager' }) => 
     fetch(`${API_BASE}/api/review/${id}/approve`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ approved_by: approvedBy })
+      body: JSON.stringify(payload)
     }).then(handleResponse),
   rejectUpdate: (id, approvedBy = 'Manager') => 
     fetch(`${API_BASE}/api/review/${id}/reject`, {

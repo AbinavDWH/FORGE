@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Body, HTTPException
 
 from app.api.schemas import ApproveRequest, PipelineResponse
 from app.core.errors import (
@@ -35,14 +35,18 @@ def review_tray():
 @router.post("/{ingestion_id}/approve", response_model=PipelineResponse)
 def approve_update(
     ingestion_id: str,
-    payload: Optional[ApproveRequest] = None,
+    payload: Optional[ApproveRequest] = Body(default=None),
 ):
     approved_by = payload.approved_by if payload else "manager"
+    corrected_extraction = payload.corrected_extraction if payload else None
+    overridden_task_id = payload.overridden_task_id if payload else None
 
     try:
         return pipeline_service.approve_update(
             ingestion_id=ingestion_id,
             approved_by=approved_by,
+            corrected_extraction=corrected_extraction,
+            overridden_task_id=overridden_task_id,
         )
     except InvalidStateError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -55,7 +59,7 @@ def approve_update(
 @router.post("/{ingestion_id}/reject", response_model=PipelineResponse)
 def reject_update(
     ingestion_id: str,
-    payload: Optional[ApproveRequest] = None,
+    payload: Optional[ApproveRequest] = Body(default=None),
 ):
     approved_by = payload.approved_by if payload else "manager"
 
