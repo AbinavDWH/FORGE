@@ -1,64 +1,40 @@
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-
-from app.api.schemas import (
-    IngestUpdateRequest,
-    IngestUpdateResponse,
-    PipelineResponse,
-)
-from app.core.errors import InvalidStateError
-from app.services import ingestion as ingestion_service
-from app.services import pipeline as pipeline_service
+# Replace: app/api/ingestion.py
+from fastapi import APIRouter, UploadFile, File, Form
+from pydantic import BaseModel
+from typing import Optional
+import uuid
+import shutil
+from pathlib import Path
 
 router = APIRouter(prefix="/api/ingestion", tags=["ingestion"])
 
+STORAGE_RAW = Path("storage/raw")
+STORAGE_RAW.mkdir(parents=True, exist_ok=True)
 
-@router.post("/updates/process", response_model=PipelineResponse)
-def create_and_process_update(req: IngestUpdateRequest):
-    record = ingestion_service.create_ingestion(req)
-    try:
-        return pipeline_service.process_ingestion(record["ingestion_id"])
-    except InvalidStateError as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
+class IngestionResponse(BaseModel):
+    ingestion_id: str
+    source: str
+    media_type: str
+    status: str
 
-
-@router.post("/media/process", response_model=PipelineResponse)
-async def upload_and_process_media(
-    file: UploadFile = File(...),
+@router.post("/upload", response_model=IngestionResponse)
+async def upload_field_update(
     source: str = Form("web_upload"),
-    device_id: str | None = Form(None),
-    gps_coords: str | None = Form(None),
+    media_type: str = Form("text"),
+    raw_text: Optional[str] = Form(None),
+    file: Optional[UploadFile] = File(None)
 ):
-    """
-    Zero-friction media input: voice note, site photo, or diary scan.
-    Runs synthetic media screening, ASR/OCR, cross-check, then the pipeline.
-    """
-    raw = await file.read()
-    record = ingestion_service.create_media_ingestion(
-        filename=file.filename,
-        content_type=file.content_type,
-        raw=raw,
-        source=source,
-        device_id=device_id,
-        gps_coords=gps_coords,
-    )
-    try:
-        return pipeline_service.process_ingestion(record["ingestion_id"])
-    except InvalidStateError as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
-
-
-@router.post("/updates", response_model=IngestUpdateResponse)
-def create_update(req: IngestUpdateRequest):
-    record = ingestion_service.create_ingestion(req)
-    return IngestUpdateResponse(
-        ingestion_id=record["ingestion_id"],
-        status=record["status"],
-    )
-
-
-@router.post("/updates/{ingestion_id}/process", response_model=PipelineResponse)
-def process_update(ingestion_id: str):
-    try:
-        return pipeline_service.process_ingestion(ingestion_id)
-    except InvalidStateError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+    """Receives raw field updates (voice, text, photo) and stores them."""
+    ingestion_id = f"ING-{uuid.uuid4().hex[:8].upper()}"
+    
+    if file:
+        file_path = STORAGE_RAW / f"{ingestion_id}_{file.filename}"
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+    return {
+        "ingestion_id": ingestion_id,
+        "source": source,
+        "media_type": media_type,
+        "status": "received"
+    }
