@@ -9,7 +9,7 @@ from pathlib import Path
 from datetime import datetime
 
 from app.api.extraction import extract_fields, ExtractionRequest
-from app.extraction.structurer import structure_text
+from app.extraction.structurer import structure_text, detect_language
 from app.extraction import whisper_asr, ocr_service, vlm_verifier
 from app.crosscheck import comparator
 from app.api.review import add_to_review_tray
@@ -136,6 +136,9 @@ def run_pipeline(
                 print(f"Image processing pipeline error: {e}")
 
         # 3. Extraction & Structuring
+        if language_hint in ("english", "English"):
+            language_hint = detect_language(processed_text)
+
         structured = structure_text(processed_text)
         
         # When VLM is primary, use VLM's structured attributes directly
