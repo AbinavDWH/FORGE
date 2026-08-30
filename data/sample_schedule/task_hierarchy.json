@@ -1,0 +1,53 @@
+{
+  "Zone A": {
+    "Civil": [
+      "CIV-EXC-001 Excavation Work Area 1",
+      "CIV-PCC-002 PCC Laying Area 1",
+      "CIV-RCC-003 RCC Construction Area 1",
+      "CIV-EQP-004 Equipment Foundation Area 1"
+    ]
+  },
+  "Zone B": {
+    "Civil": [
+      "CIV-STR-013 Pier 14 Rebar Inspection",
+      "CIV-STR-014 Pier 14 Concrete Work",
+      "CIV-STR-015 Pier 14 Curing",
+      "CIV-STR-016 Pier 14 Shuttering Removal",
+      "CIV-STR-017 Pier 15 Rebar Inspection",
+      "CIV-STR-018 Pier 15 Concrete Work",
+      "CIV-STR-019 Pier 15 Curing",
+      "CIV-STR-020 Pier 15 Shuttering Removal"
+    ]
+  },
+  "Tank Farm": {
+    "Structural": [
+      "STR-TNK-020 Tank 1 Base Plate Laying",
+      "STR-TNK-021 Tank 1 Shell Erection",
+      "STR-TNK-022 Tank 1 Roof Structure"
+    ],
+    "Piping": [
+      "PIP-HYD-023 Tank 1 Hydro Testing"
+    ]
+  },
+  "Pipeline Corridor": {
+    "Piping": [
+      "PIP-SPL-030 Main Line Pipe Spool Fabrication",
+      "PIP-SPL-031 Main Line Pipe Spool Erection",
+      "PIP-WLD-032 Main Line Welding Inspection",
+      "PIP-HYD-033 Main Line Hydro Testing"
+    ],
+    "Insulation": [
+      "INS-PIP-034 Main Line Insulation"
+    ]
+  },
+  "Pump House": {
+    "Electrical": [
+      "ELE-CAB-040 Pump House Cable Tray Installation",
+      "ELE-CAB-041 Pump House Cable Pulling",
+      "ELE-TRM-042 Pump House Termination"
+    ],
+    "Instrumentation": [
+      "INS-LOP-043 Pump House Loop Testing"
+    ]
+  }
+}

@@ -100,13 +100,13 @@ export default function ScheduleGantt() {
           {/* Task rows */}
           {tasks.map((task, i) => (
             <div
-              key={task.activity_id}
+              key={task.task_id || task.wbs_code}
               className={`grid grid-cols-12 border-b border-forge-border last:border-b-0 hover:bg-forge-soft transition-colors ${i % 2 === 1 ? 'bg-forge-soft/40' : ''}`}
             >
               <div className="col-span-4 px-5 py-4 border-r border-forge-border">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium truncate">{task.name}</div>
+                    <div className="text-sm font-medium truncate">{task.task_name}</div>
                     <div className="text-[10px] uppercase tracking-wider text-forge-muted mt-1 font-mono">
                       {task.wbs_code}
                     </div>
@@ -135,7 +135,7 @@ export default function ScheduleGantt() {
                 {/* Actual bar */}
                 {task.actual_start && (
                   <div
-                    className={`absolute h-2 ${task.status === 'completed' ? 'bg-forge-accent' : 'bg-forge-accent/60'}`}
+                    className={`absolute h-2 ${task.status === 'Completed' ? 'bg-forge-accent' : 'bg-forge-accent/60'}`}
                     style={getBarStyle(task.actual_start, task.actual_finish)}
                   >
                     <div className="absolute -top-4 left-0 text-[10px] font-mono text-forge-accent whitespace-nowrap">
@@ -157,7 +157,7 @@ export default function ScheduleGantt() {
           <span>·</span>
           <span>{tasks.length} activities</span>
           <span>·</span>
-          <span>{tasks.filter(t => t.status === 'completed').length} complete</span>
+          <span>{tasks.filter(t => t.status === 'Completed').length} complete</span>
         </div>
       </section>
     </div>

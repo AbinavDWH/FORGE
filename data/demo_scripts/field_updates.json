@@ -1,0 +1,90 @@
+[
+  {
+    "id": "demo-01",
+    "description": "Supervisor reports concrete pouring at Pier 14",
+    "raw_text": "Sector B Pier 14 concrete pouring completed",
+    "media_type": "text",
+    "expected_zone": "Zone B",
+    "expected_discipline": "Civil",
+    "expected_component": "Pier 14",
+    "expected_task_match": "CIV-STR-014",
+    "expected_action": "Concrete Work"
+  },
+  {
+    "id": "demo-02",
+    "description": "Voice note about excavation at Area 1",
+    "raw_text": "Yeah we finished excavating the work area 1 in zone A today",
+    "media_type": "voice",
+    "expected_zone": "Zone A",
+    "expected_discipline": "Civil",
+    "expected_component": "Area 1",
+    "expected_task_match": "CIV-EXC-001",
+    "expected_action": "Excavation Work"
+  },
+  {
+    "id": "demo-03",
+    "description": "Photo update of Tank 1 base plate",
+    "raw_text": "Base plate laying for tank 1 is ongoing. Attached photo.",
+    "media_type": "photo",
+    "expected_zone": "Tank Farm",
+    "expected_discipline": "Structural",
+    "expected_component": "Tank 1",
+    "expected_task_match": "STR-TNK-020",
+    "expected_action": "Base Plate Laying"
+  },
+  {
+    "id": "demo-04",
+    "description": "IVR call about Main Line spool erection",
+    "raw_text": "Hello, mainline spool erection in the pipeline corridor has been finished.",
+    "media_type": "call",
+    "expected_zone": "Pipeline Corridor",
+    "expected_discipline": "Piping",
+    "expected_component": "Main Line",
+    "expected_task_match": "PIP-SPL-031",
+    "expected_action": "Pipe Spool Erection"
+  },
+  {
+    "id": "demo-05",
+    "description": "Text update on Pump House cable pulling",
+    "raw_text": "cable pull pump house main done",
+    "media_type": "text",
+    "expected_zone": "Pump House",
+    "expected_discipline": "Electrical",
+    "expected_component": "Pump House Main",
+    "expected_task_match": "ELE-CAB-041",
+    "expected_action": "Cable Pulling"
+  },
+  {
+    "id": "demo-06",
+    "description": "Low confidence / ambiguous update",
+    "raw_text": "We did some work on the pipes near the road.",
+    "media_type": "text",
+    "expected_zone": "Unknown",
+    "expected_discipline": "Unknown",
+    "expected_component": "Unknown",
+    "expected_task_match": "None",
+    "expected_action": "Work"
+  },
+  {
+    "id": "demo-07",
+    "description": "Supervisor reports hydro test at Tank 1",
+    "raw_text": "Hydrotest for tank 1 in tank farm is successfully completed.",
+    "media_type": "voice",
+    "expected_zone": "Tank Farm",
+    "expected_discipline": "Piping",
+    "expected_component": "Tank 1",
+    "expected_task_match": "PIP-HYD-023",
+    "expected_action": "Hydro Testing"
+  },
+  {
+    "id": "demo-08",
+    "description": "Text update about rebar inspection at Pier 15",
+    "raw_text": "Rebar insp done for peer 15",
+    "media_type": "text",
+    "expected_zone": "Zone B",
+    "expected_discipline": "Civil",
+    "expected_component": "Pier 15",
+    "expected_task_match": "CIV-STR-017",
+    "expected_action": "Rebar Inspection"
+  }
+]

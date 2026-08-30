@@ -1,16 +1,72 @@
-<!-- Replace: data/sample_schedule/nrl_crude_tank.xml -->
-<?xml version="1.0" encoding="UTF-8"?>
 <Project xmlns="http://schemas.microsoft.com/project">
   <Tasks>
+    <!-- Zone A: Civil Activities -->
+    <Task>
+      <UID>10</UID>
+      <WBS>CIV-EXC-001</WBS>
+      <Name>Zone A Site Excavation</Name>
+      <Start>2026-08-01T08:00:00</Start>
+      <Finish>2026-08-04T17:00:00</Finish>
+      <ActualStart>2026-08-01T08:00:00</ActualStart>
+      <ActualFinish>2026-08-04T16:30:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Zone A</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Site Ground</Component>
+    </Task>
+    <Task>
+      <UID>11</UID>
+      <WBS>CIV-PCC-002</WBS>
+      <Name>Zone A PCC Foundation Bed</Name>
+      <Start>2026-08-05T08:00:00</Start>
+      <Finish>2026-08-07T17:00:00</Finish>
+      <ActualStart>2026-08-05T08:15:00</ActualStart>
+      <ActualFinish>2026-08-07T17:00:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Zone A</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Foundation Bed</Component>
+      <Predecessors>10</Predecessors>
+    </Task>
+    <Task>
+      <UID>12</UID>
+      <WBS>CIV-RCC-003</WBS>
+      <Name>Zone A RCC Structure Pouring</Name>
+      <Start>2026-08-08T08:00:00</Start>
+      <Finish>2026-08-12T17:00:00</Finish>
+      <ActualStart>2026-08-08T08:00:00</ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>60</PercentComplete>
+      <Zone>Zone A</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>RCC Structure</Component>
+      <Predecessors>11</Predecessors>
+    </Task>
+    <Task>
+      <UID>13</UID>
+      <WBS>CIV-FND-004</WBS>
+      <Name>Zone A Equipment Foundation</Name>
+      <Start>2026-08-13T08:00:00</Start>
+      <Finish>2026-08-17T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Zone A</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Equipment Pad</Component>
+      <Predecessors>12</Predecessors>
+    </Task>
+
+    <!-- Zone B: Pier 14 Demo Sequence (Preserving UIDs 1, 2, 3) -->
     <Task>
       <UID>1</UID>
       <WBS>CIV-STR-013</WBS>
       <Name>Pier 14 Rebar Inspection</Name>
-      <Start>2026-08-20T08:00:00</Start>
-      <Finish>2026-08-21T17:00:00</Finish>
-      <ActualStart></ActualStart>
-      <ActualFinish></ActualFinish>
-      <PercentComplete>0</PercentComplete>
+      <Start>2026-08-18T08:00:00</Start>
+      <Finish>2026-08-19T17:00:00</Finish>
+      <ActualStart>2026-08-18T08:30:00</ActualStart>
+      <ActualFinish>2026-08-19T16:45:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
       <Zone>Zone B</Zone>
       <Discipline>Civil</Discipline>
       <Component>Pier 14</Component>
@@ -19,8 +75,8 @@
       <UID>2</UID>
       <WBS>CIV-STR-014</WBS>
       <Name>Pier 14 Concrete Work</Name>
-      <Start>2026-08-22T08:00:00</Start>
-      <Finish>2026-08-24T17:00:00</Finish>
+      <Start>2026-08-20T08:00:00</Start>
+      <Finish>2026-08-22T17:00:00</Finish>
       <ActualStart></ActualStart>
       <ActualFinish></ActualFinish>
       <PercentComplete>0</PercentComplete>
@@ -33,8 +89,8 @@
       <UID>3</UID>
       <WBS>CIV-STR-015</WBS>
       <Name>Pier 14 Curing</Name>
-      <Start>2026-08-25T08:00:00</Start>
-      <Finish>2026-08-28T17:00:00</Finish>
+      <Start>2026-08-23T08:00:00</Start>
+      <Finish>2026-08-27T17:00:00</Finish>
       <ActualStart></ActualStart>
       <ActualFinish></ActualFinish>
       <PercentComplete>0</PercentComplete>
@@ -42,6 +98,219 @@
       <Discipline>Civil</Discipline>
       <Component>Pier 14</Component>
       <Predecessors>2</Predecessors>
+    </Task>
+    <Task>
+      <UID>4</UID>
+      <WBS>CIV-STR-016</WBS>
+      <Name>Pier 14 Shuttering Removal</Name>
+      <Start>2026-08-28T08:00:00</Start>
+      <Finish>2026-08-29T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Zone B</Zone>
+      <Discipline>Civil</Discipline>
+      <Component>Pier 14</Component>
+      <Predecessors>3</Predecessors>
+    </Task>
+
+    <!-- Tank Farm: Structural & Mechanical Activities -->
+    <Task>
+      <UID>20</UID>
+      <WBS>STR-TNK-001</WBS>
+      <Name>Crude Storage Tank Base Plate Erection</Name>
+      <Start>2026-08-05T08:00:00</Start>
+      <Finish>2026-08-10T17:00:00</Finish>
+      <ActualStart>2026-08-05T08:00:00</ActualStart>
+      <ActualFinish>2026-08-10T17:00:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Tank Farm</Zone>
+      <Discipline>Structural</Discipline>
+      <Component>Tank Base Plate</Component>
+    </Task>
+    <Task>
+      <UID>21</UID>
+      <WBS>STR-TNK-002</WBS>
+      <Name>Tank Shell Plate Course 1-3 Erection</Name>
+      <Start>2026-08-11T08:00:00</Start>
+      <Finish>2026-08-18T17:00:00</Finish>
+      <ActualStart>2026-08-11T08:00:00</ActualStart>
+      <ActualFinish>2026-08-18T16:00:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Tank Farm</Zone>
+      <Discipline>Structural</Discipline>
+      <Component>Tank Shell</Component>
+      <Predecessors>20</Predecessors>
+    </Task>
+    <Task>
+      <UID>22</UID>
+      <WBS>STR-TNK-003</WBS>
+      <Name>Tank Shell Plate Course 4-6 Erection</Name>
+      <Start>2026-08-19T08:00:00</Start>
+      <Finish>2026-08-26T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Tank Farm</Zone>
+      <Discipline>Structural</Discipline>
+      <Component>Tank Shell</Component>
+      <Predecessors>21</Predecessors>
+    </Task>
+    <Task>
+      <UID>23</UID>
+      <WBS>STR-TNK-004</WBS>
+      <Name>Tank Floating Roof Structure Assembly</Name>
+      <Start>2026-08-27T08:00:00</Start>
+      <Finish>2026-09-03T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Tank Farm</Zone>
+      <Discipline>Structural</Discipline>
+      <Component>Floating Roof</Component>
+      <Predecessors>22</Predecessors>
+    </Task>
+    <Task>
+      <UID>24</UID>
+      <WBS>PIP-TNK-005</WBS>
+      <Name>Tank Hydrostatic Testing</Name>
+      <Start>2026-09-04T08:00:00</Start>
+      <Finish>2026-09-10T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Tank Farm</Zone>
+      <Discipline>Piping</Discipline>
+      <Component>Tank Shell</Component>
+      <Predecessors>23</Predecessors>
+    </Task>
+
+    <!-- Pipeline Corridor: Piping & Insulation Activities -->
+    <Task>
+      <UID>30</UID>
+      <WBS>PIP-COR-001</WBS>
+      <Name>Pipe Spool Fabrication for Line 1</Name>
+      <Start>2026-08-01T08:00:00</Start>
+      <Finish>2026-08-08T17:00:00</Finish>
+      <ActualStart>2026-08-01T08:00:00</ActualStart>
+      <ActualFinish>2026-08-08T17:00:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Pipeline Corridor</Zone>
+      <Discipline>Piping</Discipline>
+      <Component>Line 1 Spool</Component>
+    </Task>
+    <Task>
+      <UID>31</UID>
+      <WBS>PIP-COR-002</WBS>
+      <Name>Pipe Spool Erection along Corridor</Name>
+      <Start>2026-08-09T08:00:00</Start>
+      <Finish>2026-08-16T17:00:00</Finish>
+      <ActualStart>2026-08-09T08:00:00</ActualStart>
+      <ActualFinish>2026-08-16T17:00:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Pipeline Corridor</Zone>
+      <Discipline>Piping</Discipline>
+      <Component>Corridor Piping</Component>
+      <Predecessors>30</Predecessors>
+    </Task>
+    <Task>
+      <UID>32</UID>
+      <WBS>PIP-COR-003</WBS>
+      <Name>Pipeline Field Welding &amp; NDT Inspection</Name>
+      <Start>2026-08-17T08:00:00</Start>
+      <Finish>2026-08-23T17:00:00</Finish>
+      <ActualStart>2026-08-17T08:00:00</ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>50</PercentComplete>
+      <Zone>Pipeline Corridor</Zone>
+      <Discipline>Piping</Discipline>
+      <Component>Corridor Piping</Component>
+      <Predecessors>31</Predecessors>
+    </Task>
+    <Task>
+      <UID>33</UID>
+      <WBS>PIP-COR-004</WBS>
+      <Name>Pipeline Hydro Testing for Line 2</Name>
+      <Start>2026-08-24T08:00:00</Start>
+      <Finish>2026-08-28T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Pipeline Corridor</Zone>
+      <Discipline>Piping</Discipline>
+      <Component>Line 2</Component>
+      <Predecessors>32</Predecessors>
+    </Task>
+    <Task>
+      <UID>34</UID>
+      <WBS>INS-COR-005</WBS>
+      <Name>Pipeline Thermal Insulation Line 2</Name>
+      <Start>2026-08-29T08:00:00</Start>
+      <Finish>2026-09-04T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Pipeline Corridor</Zone>
+      <Discipline>Insulation</Discipline>
+      <Component>Line 2</Component>
+      <Predecessors>33</Predecessors>
+    </Task>
+
+    <!-- Pump House: Electrical & Instrumentation Activities -->
+    <Task>
+      <UID>40</UID>
+      <WBS>ELE-PMP-001</WBS>
+      <Name>Pump House Cable Tray Installation</Name>
+      <Start>2026-08-10T08:00:00</Start>
+      <Finish>2026-08-15T17:00:00</Finish>
+      <ActualStart>2026-08-10T08:00:00</ActualStart>
+      <ActualFinish>2026-08-15T17:00:00</ActualFinish>
+      <PercentComplete>100</PercentComplete>
+      <Zone>Pump House</Zone>
+      <Discipline>Electrical</Discipline>
+      <Component>Cable Tray</Component>
+    </Task>
+    <Task>
+      <UID>41</UID>
+      <WBS>ELE-PMP-002</WBS>
+      <Name>Main Feed Cable Pulling</Name>
+      <Start>2026-08-16T08:00:00</Start>
+      <Finish>2026-08-21T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Pump House</Zone>
+      <Discipline>Electrical</Discipline>
+      <Component>Main Feed Cable</Component>
+      <Predecessors>40</Predecessors>
+    </Task>
+    <Task>
+      <UID>42</UID>
+      <WBS>INS-PMP-003</WBS>
+      <Name>Instrumentation Pressure Transmitter Installation</Name>
+      <Start>2026-08-22T08:00:00</Start>
+      <Finish>2026-08-26T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Pump House</Zone>
+      <Discipline>Instrumentation</Discipline>
+      <Component>Pressure Transmitter</Component>
+      <Predecessors>41</Predecessors>
+    </Task>
+    <Task>
+      <UID>43</UID>
+      <WBS>INS-PMP-004</WBS>
+      <Name>Pump House Control Loop Testing</Name>
+      <Start>2026-08-27T08:00:00</Start>
+      <Finish>2026-08-31T17:00:00</Finish>
+      <ActualStart></ActualStart>
+      <ActualFinish></ActualFinish>
+      <PercentComplete>0</PercentComplete>
+      <Zone>Pump House</Zone>
+      <Discipline>Instrumentation</Discipline>
+      <Component>Control Loop</Component>
+      <Predecessors>42</Predecessors>
     </Task>
   </Tasks>
 </Project>

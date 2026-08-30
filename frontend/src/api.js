@@ -10,7 +10,13 @@ const handleResponse = async (res) => {
 
 export const api = {
   // Schedule
-  getTasks: () => fetch(`${API_BASE}/api/schedule/tasks`).then(handleResponse),
+  getTasks: () => fetch(`${API_BASE}/api/schedule/tasks`).then(handleResponse).then(d => d.tasks || d),
+  updateActuals: (payload) => 
+    fetch(`${API_BASE}/api/schedule/update_actuals`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(handleResponse),
   
   // Review Tray
   getReviewTray: () => fetch(`${API_BASE}/api/review/tray`).then(handleResponse),
@@ -28,5 +34,13 @@ export const api = {
     }).then(handleResponse),
 
   // Audit
-  getAuditLogs: () => fetch(`${API_BASE}/api/audit/logs`).then(handleResponse),
+  getAuditLogs: () => fetch(`${API_BASE}/api/audit/chain`).then(handleResponse).then(d => d.records || d),
+  verifyAudit: () => fetch(`${API_BASE}/api/audit/verify`).then(handleResponse),
+  
+  // Ingestion
+  uploadIngestion: (formData) =>
+    fetch(`${API_BASE}/api/ingestion/upload`, {
+      method: 'POST',
+      body: formData
+    }).then(handleResponse),
 };

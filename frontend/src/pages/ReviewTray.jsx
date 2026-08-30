@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
+import OcrVlmComparison from '../review/OcrVlmComparison';
 
 export default function ReviewTray() {
   const [items, setItems] = useState([]);
@@ -241,8 +242,8 @@ export default function ReviewTray() {
                           >
                             <option value="">— select —</option>
                             {allTasks.map(t => (
-                              <option key={t.activity_id} value={t.activity_id}>
-                                {t.activity_id} — {t.name}
+                              <option key={t.task_id || t.wbs_code} value={t.task_id}>
+                                {t.wbs_code} — {t.task_name}
                               </option>
                             ))}
                           </select>
@@ -299,6 +300,8 @@ export default function ReviewTray() {
                             ))}
                           </ul>
                         </div>
+
+                        <OcrVlmComparison item={item} />
                       </div>
                     )}
                   </div>
